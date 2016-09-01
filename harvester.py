@@ -52,26 +52,28 @@ class TwitterUser:
         self.screen_name = screen_name
         self.db = db
         self.api = api
-        self.last_tweetsat = self.check_tweetsat()
-        self.last_tweets = self.check_tweets()
+        self.check_tweetsat()
+        self.check_tweets()
 
     def check_tweetsat(self):
         collection_name = self.screen_name[1:] + '_tweetsat'
-        return get_db_last(self.db, collection_name)
+        self.last_tweetsat = get_db_last(self.db, collection_name)
 
     def check_tweets(self):
         collection_name = self.screen_name[1:] + '_tweets'
-        return get_db_last(self.db, collection_name)
+        self.last_tweets = get_db_last(self.db, collection_name)
 
-    def get_tweetsat_cursor(self, max_tweets, since_id=None):
+    def update_tweetsat(self, max_tweets, since_id=None):
         collection_name = self.screen_name[1:] + '_tweetsat'
         cursor = tweepy.Cursor(self.api.search, q=self.screen_name, count=300, since_id=self.last_tweetsat).items(max_tweets)
         count = store_tweets(cursor, self.db, collection_name)
+        self.check_tweetsat()
         print "stored %d tweets at %s" % (count, self.screen_name)
 
-    def get_tweets_cursor(self, max_tweets, since_id=None):
+    def update_tweets(self, max_tweets, since_id=None):
         collection_name = self.screen_name[1:] + '_tweets'
         cursor = tweepy.Cursor(self.api.user_timeline, screen_name="@donlemon", count=300, since_id=self.last_tweets).items(
             max_tweets)
         count = store_tweets(cursor, self.db, collection_name)
+        self.check_tweets()
         print "stored %d of %s's tweets" % (count, self.screen_name)

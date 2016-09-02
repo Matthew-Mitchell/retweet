@@ -1,5 +1,28 @@
 import tweepy
 
+# Retweet class has methods to collect and store information about a retweet
+# Tweet must be a dictionary.  Status objects should be converted with ._json
+class Retweet:
+    def __init__(self, tweet):
+        tweet = tweet
+        self.tweeter = '@' + tweet['quoted_status']['user']['screen_name']
+        self.retweeter = '@' + tweet['user']['screen_name']
+        self.follows1 = None
+        self.follows2 = None
+        self.retweet = tweet
+        self.tweeter_history = []
+    def get_history(self, api, ntweets):
+        cursor = tweepy.Cursor(api.user_timeline,screen_name=self.tweeter, count=100).items(ntweets)
+        self.tweeter_history = [tweet._json for tweet in limit_handled(cursor)]
+    def get_friendship(self, api):
+        friendship = api.show_friendship(source_screen_name=self.tweeter, target_screen_name=self.retweeter)
+        self.follows1 = friendship[0].following
+        self.follows2 = friendship[0].followed_by
+    def save(self, db):
+        collection_name = self.retweeter[1:] + '_retweets'
+        target_colection = db[collection_name]
+        target_colection.insert_one(self.__dict__)
+
 # TwitterUser class has methods to read and store the activity of a twitter user
 class TwitterUser:
     def __init__(self, screen_name, api, db):
@@ -26,8 +49,17 @@ class TwitterUser:
 
     def update_tweets(self, max_tweets, since_id=None):
         collection_name = self.screen_name[1:] + '_tweets'
-        cursor = tweepy.Cursor(self.api.user_timeline, screen_name="@donlemon", count=300, since_id=self.last_tweets).items(
+        cursor = tweepy.Cursor(self.api.user_timeline, screen_name=self.screen_name, count=300, since_id=self.last_tweets).items(
             max_tweets)
+        count = store_tweets(cursor, self.db, collection_name)
+        self.check_tweets()
+        print "stored %d of %s's tweets" % (count, self.screen_name)
+
+    def extend_tweets(self, npages):
+        collection_name = self.screen_name[1:] + '_tweets'
+        first_tweet=get_db_first(db, collection_name)
+        cursor = tweepy.Cursor(self.api.user_timeline, screen_name=self.screen_name, count=300,
+                               max_id=first_tweet-1).pages(npages)
         count = store_tweets(cursor, self.db, collection_name)
         self.check_tweets()
         print "stored %d of %s's tweets" % (count, self.screen_name)

@@ -17,11 +17,18 @@ db = client.retweets
 # Set max tweets for initialization and update
 max_tweets_init=5000
 
+# List of twitter accounts to track
 accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@IAmSteveHarvey', '@juliaioffe',
             '@ForecasterEnten', '@pmarca']
 
 # Clear db if it exists
+for username in accounts[1:]:
+    collection_name = username[1:] + '_tweets'
+    if collection_name in db.collection_names():
+        print "Found collection %s.  Deleting..."%collection_name
+        db[collection_name].drop()
 
+# Initialize for each user
 from harvester import TwitterUser
 for username in accounts:
     user = TwitterUser(username, api, db)

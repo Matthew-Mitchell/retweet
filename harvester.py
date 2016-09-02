@@ -55,14 +55,15 @@ class TwitterUser:
         self.check_tweets()
         print "stored %d of %s's tweets" % (count, self.screen_name)
 
-    def extend_tweets(self, npages):
+    def extend_tweets(self, nitems):
         collection_name = self.screen_name[1:] + '_tweets'
-        first_tweet=get_db_first(db, collection_name)
+        first_tweet=get_db_first(self.db, collection_name)
         cursor = tweepy.Cursor(self.api.user_timeline, screen_name=self.screen_name, count=300,
-                               max_id=first_tweet-1).pages(npages)
+                               max_id=first_tweet-1).items(nitems)
         count = store_tweets(cursor, self.db, collection_name)
         self.check_tweets()
         print "stored %d of %s's tweets" % (count, self.screen_name)
+
 
 # Helper Functions:
 # Enforce time api limits

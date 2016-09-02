@@ -4,7 +4,7 @@ from harvester import Retweet
 # Set up twitter
 import cnfg
 import tweepy
-config = cnfg.load(".twitter_config")
+config = cnfg.load(".twitter_config_whosyodata")
 auth = tweepy.OAuthHandler(config["consumer_key"],
                            config["consumer_secret"])
 auth.set_access_token(config["access_token"],
@@ -22,11 +22,12 @@ accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@
 
 for user in accounts:
     tweets_collection = db[user[1:] + '_tweets']
+    retweets_collection = db[user[1:] + '_retweets']
     succ_count = 0
     fail_count = 0
     for tweet in tweets_collection.find():
         if tweet['is_quote_status']:
-            if tweets_collection.find({'id': tweet['id']}).count():
+            if retweets_collection.find({'id': tweet['id']}).count():
                 print 'Tweet already in DB'
                 continue
             try:

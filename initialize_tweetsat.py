@@ -25,7 +25,7 @@ accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@
 from harvester import TwitterUser
 for username in accounts:
     user = TwitterUser(username, api, db)
-    user.update_tweets(max_tweets_init)
+    user.update_tweetsat(max_tweets_init)
 print 'Done updating'
 
 

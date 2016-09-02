@@ -22,8 +22,8 @@ accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@
             '@ForecasterEnten', '@pmarca']
 
 # Clear db if it exists
-for username in accounts[1:]:
-    collection_name = username[1:] + '_tweets'
+for username in accounts:
+    collection_name = username + '_tweets'
     if collection_name in db.collection_names():
         print "Found collection %s.  Deleting..."%collection_name
         db[collection_name].drop()

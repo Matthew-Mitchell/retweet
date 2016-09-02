@@ -1,3 +1,5 @@
+'''Initialize tweets database for each user'''
+
 # Set up twitter access
 # pip install tweepy
 import cnfg
@@ -18,8 +20,7 @@ db = client.retweets
 max_tweets_init=5000
 
 # List of twitter accounts to track
-accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@IAmSteveHarvey', '@juliaioffe',
-            '@ForecasterEnten', '@pmarca']
+accounts = ['@wikileaks', '@joerogan']
 
 # Clear db if it exists
 for username in accounts:

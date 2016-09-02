@@ -1,3 +1,5 @@
+'''Classes and functions for dowloading tweets and retweets'''
+
 import tweepy
 
 # Retweet class has methods to collect and store information about a retweet

@@ -1,3 +1,5 @@
+'''Initialize tweetsat database for each user'''
+
 # Set up twitter access
 # pip install tweepy
 import cnfg

@@ -24,9 +24,9 @@ for user in accounts:
     tweets_collection = db[user[1:] + '_tweets']
     succ_count = 0
     fail_count = 0
-    for tweet in tweets_collection.find().limit(25):
+    for tweet in tweets_collection.find():
         if tweet['is_quote_status']:
-            if tweets_collection.find({'id': 770604234991607808}).count():
+            if tweets_collection.find({'id': tweet['id']}).count():
                 print 'Tweet already in DB'
                 continue
             try:

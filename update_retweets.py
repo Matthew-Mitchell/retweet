@@ -25,10 +25,11 @@ for user in accounts:
     retweets_collection = db[user[1:] + '_retweets']
     succ_count = 0
     fail_count = 0
+    done_count = 0
     for tweet in tweets_collection.find():
         if tweet['is_quote_status']:
             if retweets_collection.find({'retweet.id': tweet['id']}).count():
-                print 'Tweet already in DB'
+                done_count += 1
                 continue
             try:
                 rt = Retweet(tweet)
@@ -38,4 +39,4 @@ for user in accounts:
                 succ_count += 1
             except:
                 fail_count += 1
-    print "%s: %d WIN!, %d fail, %d total" % (user, succ_count, fail_count, tweets_collection.count())
+    print "%s: %d WIN!, %d fail, %d duplicates" % (user, succ_count, fail_count, done_count)

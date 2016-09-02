@@ -27,7 +27,7 @@ for user in accounts:
     fail_count = 0
     for tweet in tweets_collection.find():
         if tweet['is_quote_status']:
-            if retweets_collection.find({'id': tweet['id']}).count():
+            if retweets_collection.find({'retweet.id': tweet['id']}).count():
                 print 'Tweet already in DB'
                 continue
             try:

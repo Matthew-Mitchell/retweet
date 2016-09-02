@@ -15,7 +15,6 @@ client = MongoClient()
 db = client.retweets
 
 # Set max tweets for initialization and update
-max_tweets_init=3000
 max_tweets_update=100
 
 accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@IAmSteveHarvey', '@juliaioffe',

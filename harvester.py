@@ -12,8 +12,8 @@ class Retweet:
             self.tweeter = '@' + tweet['quoted_status']['user']['screen_name']
             self.retweeter = '@' + tweet['user']['screen_name']
         else:
-            self.tweeter = tweet['retweeted_status']['user']['screen_name']
-            self.retweeter = tweet['user']['screen_name']
+            self.tweeter = '@' + tweet['retweeted_status']['user']['screen_name']
+            self.retweeter = '@' + tweet['user']['screen_name']
         self.follows1 = None
         self.follows2 = None
         self.retweet = tweet

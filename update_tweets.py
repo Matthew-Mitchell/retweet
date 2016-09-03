@@ -20,7 +20,7 @@ db = client.retweets
 max_tweets_update=100
 
 accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@IAmSteveHarvey', '@juliaioffe',
-            '@ForecasterEnten', '@pmarca', '@wikileaks', '@joerogan', '@BenedictEvans']
+            '@ForecasterEnten', '@pmarca', '@wikileaks', '@joerogan', '@BenedictEvans', '@pescami']
 
 from harvester import TwitterUser
 for username in accounts:

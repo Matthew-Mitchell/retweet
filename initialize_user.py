@@ -25,13 +25,13 @@ accounts = ['@pescami']
 # Clear db if it exists
 for username in accounts:
     # Tweets
-    collection_name = username + '_tweets'
+    collection_name = username[1:] + '_tweets'
     if collection_name in db.collection_names():
         print "Found collection %s.  Deleting..."%collection_name
         db[collection_name].drop()
 
     # Tweets at
-    collection_name = username + '_tweetsat'
+    collection_name = username[1:] + '_tweetsat'
     if collection_name in db.collection_names():
         print "Found collection %s.  Deleting..." % collection_name
         db[collection_name].drop()

@@ -20,9 +20,9 @@ class Retweet:
         self.tweeter_history = []
     def get_history(self, api, ntweets):
         cursor = tweepy.Cursor(api.user_timeline,screen_name=self.tweeter, count=100).items(ntweets)
-        self.tweeter_history = [tweet._json for tweet in limit_handled(cursor)]
+        self.tweeter_history = [tweet._json for tweet in limit_cursor(cursor)]
     def get_friendship(self, api):
-        friendship_limited(api, self.tweeter, self.retweeter)
+        friendship = friendship_limited(api, self.tweeter, self.retweeter)
         self.follows1 = friendship[0].following
         self.follows2 = friendship[0].followed_by
     def save(self, db):
@@ -77,15 +77,15 @@ class TwitterUser:
 
 # Enforce api limit on friendship
 def friendship_limited(api, tweeter, retweeter):
-    try:
-        friendship = api.show_friendship(source_screen_name=tweeter, target_screen_name=retweeter)
-    except tweepy.RateLimitError:
-        print "Rate limited on friendship.  Waiting 5 mins."
-        time.sleep(5 * 60)
-    return friendship
+    while True:
+        try:
+            return api.show_friendship(source_screen_name=tweeter, target_screen_name=retweeter)
+        except tweepy.RateLimitError:
+            print "Rate limited on friendship.  Waiting 5 mins."
+            time.sleep(5 * 60)
 
 # Enforce api limit on cursors
-def limit_handled(cursor):
+def limit_cursor(cursor):
     while True:
         try:
             yield cursor.next()
@@ -97,7 +97,7 @@ def limit_handled(cursor):
 # Store tweets in a database
 def store_tweets(cursor, db, collection_name):
     count = 0
-    query_iterator = limit_handled(cursor)
+    query_iterator = limit_cursor(cursor)
     for tweet in query_iterator:
         tweet_dict = tweet._json
         target_colection = db[collection_name]
@@ -108,7 +108,7 @@ def store_tweets(cursor, db, collection_name):
 
 # Print out a little info about a list of tweets.  Used to confirm that the query worked.
 def check_tweets(cursor):
-    query_iterator = limit_handled(cursor)
+    query_iterator = limit_cursor(cursor)
     for tweet in query_iterator:
         print "%s: %s" % (tweet.user.screen_name, tweet.created_at)
 

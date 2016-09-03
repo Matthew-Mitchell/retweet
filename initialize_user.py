@@ -20,7 +20,7 @@ db = client.retweets
 max_tweets_init=5000
 
 # List of twitter accounts to track
-accounts = []
+accounts = ['@pescami']
 
 # Clear db if it exists
 for username in accounts:

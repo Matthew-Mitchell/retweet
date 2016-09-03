@@ -22,17 +22,14 @@ class Retweet:
         cursor = tweepy.Cursor(api.user_timeline,screen_name=self.tweeter, count=100).items(ntweets)
         self.tweeter_history = [tweet._json for tweet in limit_handled(cursor)]
     def get_friendship(self, api):
-        try:
-            friendship = api.show_friendship(source_screen_name=self.tweeter, target_screen_name=self.retweeter)
-        except tweepy.RateLimitError:
-            print "Rate limited on friendship.  Waiting 2 mins."
-            time.sleep(2 * 60)
+        friendship_limited(api, self.tweeter, self.retweeter)
         self.follows1 = friendship[0].following
         self.follows2 = friendship[0].followed_by
     def save(self, db):
         collection_name = self.retweeter[1:] + '_retweets'
         target_colection = db[collection_name]
         target_colection.insert_one(self.__dict__)
+
 
 # TwitterUser class has methods to read and store the activity of a twitter user
 class TwitterUser:
@@ -77,13 +74,24 @@ class TwitterUser:
 
 
 # Helper Functions:
-# Enforce time api limits
+
+# Enforce api limit on friendship
+def friendship_limited(api, tweeter, retweeter):
+    try:
+        friendship = api.show_friendship(source_screen_name=tweeter, target_screen_name=retweeter)
+    except tweepy.RateLimitError:
+        print "Rate limited on friendship.  Waiting 5 mins."
+        time.sleep(5 * 60)
+    return friendship
+
+# Enforce api limit on cursors
 def limit_handled(cursor):
     while True:
         try:
             yield cursor.next()
         except tweepy.RateLimitError:
-            time.sleep(1 * 60)
+            print "Rate limited on cursor.  Waiting 5 mins."
+            time.sleep(5 * 60)
 
 
 # Store tweets in a database

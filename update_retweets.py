@@ -41,6 +41,6 @@ for user in accounts:
                 succ_count += 1
             except:
                 fail_count += 1
-        if succ_count > MAX_RETWEETS:
+        if succ_count >= MAX_RETWEETS:
             break
     print "%s: %d WIN!, %d fail, %d duplicates" % (user, succ_count, fail_count, done_count)

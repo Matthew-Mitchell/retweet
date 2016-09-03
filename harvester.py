@@ -1,6 +1,7 @@
 '''Classes and functions for dowloading tweets and retweets'''
 
 import tweepy
+import time
 
 # Retweet class has methods to collect and store information about a retweet
 # Tweet must be a dictionary.  Status objects should be converted with ._json
@@ -21,7 +22,11 @@ class Retweet:
         cursor = tweepy.Cursor(api.user_timeline,screen_name=self.tweeter, count=100).items(ntweets)
         self.tweeter_history = [tweet._json for tweet in limit_handled(cursor)]
     def get_friendship(self, api):
-        friendship = api.show_friendship(source_screen_name=self.tweeter, target_screen_name=self.retweeter)
+        try:
+            friendship = api.show_friendship(source_screen_name=self.tweeter, target_screen_name=self.retweeter)
+        except tweepy.RateLimitError:
+            print "Rate limited on friendship.  Waiting 2 mins."
+            time.sleep(2 * 60)
         self.follows1 = friendship[0].following
         self.follows2 = friendship[0].followed_by
     def save(self, db):

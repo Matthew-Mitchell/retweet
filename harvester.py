@@ -7,8 +7,12 @@ import tweepy
 class Retweet:
     def __init__(self, tweet):
         tweet = tweet
-        self.tweeter = '@' + tweet['quoted_status']['user']['screen_name']
-        self.retweeter = '@' + tweet['user']['screen_name']
+        if 'quoted_status' in tweet:
+            self.tweeter = '@' + tweet['quoted_status']['user']['screen_name']
+            self.retweeter = '@' + tweet['user']['screen_name']
+        else:
+            self.tweeter = tweet['retweeted_status']['user']['screen_name']
+            self.retweeter = tweet['user']['screen_name']
         self.follows1 = None
         self.follows2 = None
         self.retweet = tweet

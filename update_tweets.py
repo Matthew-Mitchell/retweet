@@ -19,6 +19,9 @@ db = client.retweets
 # Set max tweets for initialization and update
 max_tweets_update=100
 
+from datetime import datetime
+print "### Starting at %s"%datetime.now()
+
 accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@IAmSteveHarvey', '@juliaioffe',
             '@ForecasterEnten', '@pmarca', '@wikileaks', '@joerogan', '@BenedictEvans', '@pescami']
 

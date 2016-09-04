@@ -20,7 +20,7 @@ db = client.retweets
 max_tweets_update=100
 
 from datetime import datetime
-print "### Starting at %s"%datetime.now()
+print "### Updating tweets at %s"%datetime.now()
 
 accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@IAmSteveHarvey', '@juliaioffe',
             '@ForecasterEnten', '@pmarca', '@wikileaks', '@joerogan', '@BenedictEvans', '@pescami']
@@ -30,6 +30,5 @@ for username in accounts:
     user = TwitterUser(username, api, db)
     user.update_tweetsat(max_tweets_update)
     user.update_tweets(max_tweets_update)
-print 'Done updating'
-
 client.close()
+print 'Done updating'

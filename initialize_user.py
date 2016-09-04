@@ -22,6 +22,10 @@ max_tweets_init=5000
 # List of twitter accounts to track
 accounts = ['@pescami']
 
+from datetime import datetime
+print "### Initialising users %s \nat %s"%(str(accounts), datetime.now())
+
+
 # Clear db if it exists
 for username in accounts:
     # Tweets
@@ -42,8 +46,6 @@ for username in accounts:
     user = TwitterUser(username, api, db)
     user.update_tweets(max_tweets_init)
     user.update_tweetsat(max_tweets_init)
-print 'Done updating'
-
 client.close()
-
+print 'Done initializing'
 

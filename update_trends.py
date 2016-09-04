@@ -11,6 +11,9 @@ from pymongo import MongoClient
 client = MongoClient()
 db = client.retweets
 
+from datetime import datetime
+print "### Saving US and World trends at %s"%datetime.now()
+
 WORLD_WOE_ID = 1
 US_WOE_ID = 23424977
 twitter_api = twitter.Twitter(auth=auth)
@@ -19,3 +22,5 @@ us_trends = twitter_api.trends.place(_id=US_WOE_ID)[0]
 
 db.us_trends.insert_one(us_trends)
 db.world_trends.insert_one(world_trends)
+
+print 'Done updating trends'

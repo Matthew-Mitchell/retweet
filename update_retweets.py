@@ -20,7 +20,7 @@ db = client.retweets
 accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@IAmSteveHarvey', '@juliaioffe',
             '@ForecasterEnten', '@pmarca', '@wikileaks', '@joerogan', '@BenedictEvans', '@pescami']
 
-MAX_RETWEETS = 100
+MAX_RETWEETS = 50
 
 for user in accounts:
     tweets_collection = db[user[1:] + '_tweets']

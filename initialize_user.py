@@ -20,7 +20,7 @@ db = client.retweets
 max_tweets_init=5000
 
 # List of twitter accounts to track
-accounts = ['@pescami']
+accounts = ['@megynkelly', '@tanehisicoates', '@jdickerson', '@TomLlamasABC', '@TheFix', '@ggreenwald', '@ezraklein', '@mattyglesias', '@brianstelter', '@thegarance', '@DianeSawyer', '@jbarro']
 
 from datetime import datetime
 print "### Initialising users %s \nat %s"%(str(accounts), datetime.now())

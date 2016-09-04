@@ -29,4 +29,4 @@ for username in accounts:
     user.update_tweets(max_tweets_update)
 print 'Done updating'
 
-
+client.close()

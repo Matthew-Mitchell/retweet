@@ -44,4 +44,6 @@ for username in accounts:
     user.update_tweetsat(max_tweets_init)
 print 'Done updating'
 
+client.close()
+
 

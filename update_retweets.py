@@ -20,7 +20,7 @@ db = client.retweets
 accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@IAmSteveHarvey', '@juliaioffe',
             '@ForecasterEnten', '@pmarca', '@wikileaks', '@joerogan', '@BenedictEvans', '@pescami']
 
-MAX_RETWEETS = 200
+MAX_RETWEETS = 1000
 
 for user in accounts:
     tweets_collection = db[user[1:] + '_tweets']
@@ -44,3 +44,5 @@ for user in accounts:
         if succ_count >= MAX_RETWEETS:
             break
     print "%s: %d WIN!, %d fail, %d duplicates" % (user, succ_count, fail_count, done_count)
+
+client.close()

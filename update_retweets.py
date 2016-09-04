@@ -23,7 +23,7 @@ print "### Updating retweets at %s"%datetime.now()
 accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@IAmSteveHarvey', '@juliaioffe',
             '@ForecasterEnten', '@pmarca', '@wikileaks', '@joerogan', '@BenedictEvans', '@pescami']
 
-MAX_RETWEETS = 50
+MAX_RETWEETS = 20
 
 for user in accounts:
     tweets_collection = db[user[1:] + '_tweets']

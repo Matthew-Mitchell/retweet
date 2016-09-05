@@ -89,7 +89,8 @@ def limit_cursor(cursor):
     while True:
         try:
             yield cursor.next()
-        except (tweepy.RateLimitError, tweepy.error.TweepError):
+        except (tweepy.RateLimitError, tweepy.error.TweepError) as e:
+            print e
             print "Rate limited on cursor.  Waiting 5 mins."
             time.sleep(5 * 60)
 

@@ -40,7 +40,7 @@ for user in accounts:
             try:
                 rt = Retweet(tweet)
                 rt.get_friendship(api)
-                rt.get_history(api, 20)
+                rt.get_history(api, 100)
                 rt.save(db)
                 succ_count += 1
             except:

@@ -24,7 +24,7 @@ accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@
             '@ForecasterEnten', '@pmarca', '@wikileaks', '@joerogan', '@BenedictEvans', '@pescami', '@TheFix',
             '@ggreenwald', '@ezraklein', '@mattyglesias', '@brianstelter', '@thegarance', '@DianeSawyer', '@jbarro']
 
-MAX_RETWEETS = 500
+MAX_RETWEETS = 179
 
 for user in accounts:
     tweets_collection = db[user[1:] + '_tweets']

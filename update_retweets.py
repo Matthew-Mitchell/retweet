@@ -45,6 +45,8 @@ for user in accounts:
                 succ_count += 1
             except:
                 fail_count += 1
+                twfail = {'retweet': {'id': tweet['id']}, 'failcount': 1}
+                retweets_collection.insert_one(twfail)
         if succ_count >= MAX_RETWEETS:
             break
     number_stored = retweets_collection.find().count()

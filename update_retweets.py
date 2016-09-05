@@ -24,7 +24,7 @@ accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@
             '@ForecasterEnten', '@pmarca', '@wikileaks', '@joerogan', '@BenedictEvans', '@pescami', '@TheFix',
             '@ggreenwald', '@ezraklein', '@mattyglesias', '@brianstelter', '@thegarance', '@DianeSawyer', '@jbarro']
 
-MAX_RETWEETS = 20
+MAX_RETWEETS = 5
 
 for user in accounts:
     tweets_collection = db[user[1:] + '_tweets']
@@ -40,7 +40,7 @@ for user in accounts:
             try:
                 rt = Retweet(tweet)
                 rt.get_friendship(api)
-                rt.get_history(api, 100)
+                rt.get_history(api, 20)
                 rt.save(db)
                 succ_count += 1
             except:

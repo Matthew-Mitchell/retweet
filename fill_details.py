@@ -89,20 +89,22 @@ collection = db['tweets_formatted']
 reporters = ['@donlemon', '@juliaioffe', '@ForecasterEnten', '@pescami', '@TheFix', '@ggreenwald',
                  '@ezraklein', '@mattyglesias', '@brianstelter', '@thegarance', '@DianeSawyer', '@jbarro']
 
-MAX_TO_DO = 400
+MAX_TO_DO = 100
+
 
 reporter_retweets = []
 reporter_retweet_mentions = []
-for user in reporters[:1]:
+for user in reporters:
     retweets = [rt for rt in db[user[1:] + '_retweets'].find() if 'is_quote_status' in rt['retweet']]
     retweets = [s for s in retweets if s['retweet']['is_quote_status']]
-    retweets = [rt for rt in retweets if (collection.find({'id': get_status_data(rt)['id']}).count() < 1)]
+    retweets = [rt for rt in retweets if not collection.find({'id': get_status_data(rt)['id']}).count()]
     reporter_retweets += retweets
 
     if len(reporter_retweets) >= MAX_TO_DO:
         break
 
 reporter_retweets = reporter_retweets[:MAX_TO_DO]
+print "Filling in %d tweets"%len(reporter_retweets)
 
 # Fill in the tweets
 MAX_DEPTH = 10
@@ -120,6 +122,8 @@ for tweet in reporter_retweets:
         try:
             text_expanded = follow_links(text)
         except:
+            entry = {'id': status_data['id'], 'failed': 1}
+            collection.insert_one(entry)
             fail += 1
             continue
         tweets_expanded.append(text_expanded)
@@ -128,7 +132,7 @@ for tweet in reporter_retweets:
         succ += 1
     else:
         done += 1
-print "(%d / %d / %d)" % (succ, done, collection.count())
+print "(%d / %d / %d)" % (succ, fail, collection.count())
 
 
 # status_data.keys()

@@ -40,8 +40,8 @@ def follow_links(text, depth=0, followed=set()):
     urls = re.findall(re_urls, text)
     for url in urls:
         text = text.replace(url, '')
+    texts.append(('TWEET', text, 0))
     if not urls:
-        texts.append(('TWEET', text))
         return texts
     else:
         for url in urls:
@@ -59,7 +59,6 @@ def follow_links(text, depth=0, followed=set()):
                 # print 'Found link to status %s'%status_id
                 retrieved_status = get_status([status_id])[0]
                 link_text = retrieved_status.text
-                texts.append(('TWEET', link_text))
                 sub_texts = follow_links(link_text, depth + 1, followed)
                 if sub_texts:
                     texts += sub_texts
@@ -68,10 +67,9 @@ def follow_links(text, depth=0, followed=set()):
                 a.download()
                 a.parse()
                 link_text = a.title
-                texts.append(('LINK', link_text))
+                texts.append(('LINK', link_text, url))
                 # print 'found link: %s'%link_text
-        texts = [('TWEET', text)] + texts
-        return [t for t in texts if t]
+        return [t for t in texts if t[1]]
 
 
 def get_status_data(tweet):

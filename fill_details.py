@@ -89,7 +89,7 @@ collection = db['tweets_formatted']
 reporters = ['@donlemon', '@juliaioffe', '@ForecasterEnten', '@pescami', '@TheFix', '@ggreenwald',
                  '@ezraklein', '@mattyglesias', '@brianstelter', '@thegarance', '@DianeSawyer', '@jbarro']
 
-MAX_TO_DO = 100
+MAX_TO_DO = 150
 
 reporter_retweets = []
 for user in reporters:

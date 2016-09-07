@@ -58,15 +58,15 @@ def follow_links(text, depth=0, followed=set()):
                 retrieved_status = get_status([status_id])[0]
                 link_text = retrieved_status.text
                 link_text = follow_links(link_text, depth + 1, followed)
-                link_texts.append(link_text)
+                link_texts.append(('TWEET', link_text))
             else:
                 a = Article(url)
                 a.download()
                 a.parse()
                 link_text = a.title
-                link_texts.append(link_text)
+                link_texts.append(('LINK', link_text))
                 # print 'found link: %s'%link_text
-        texts = [text] + link_texts
+        texts = [('TWEET', text)] + link_texts
         return [t for t in texts if t]
 
 

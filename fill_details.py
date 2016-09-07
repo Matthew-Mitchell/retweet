@@ -91,9 +91,7 @@ reporters = ['@donlemon', '@juliaioffe', '@ForecasterEnten', '@pescami', '@TheFi
 
 MAX_TO_DO = 100
 
-
 reporter_retweets = []
-reporter_retweet_mentions = []
 for user in reporters:
     retweets = [rt for rt in db[user[1:] + '_retweets'].find() if 'is_quote_status' in rt['retweet']]
     retweets = [s for s in retweets if s['retweet']['is_quote_status']]

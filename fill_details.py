@@ -30,18 +30,20 @@ def get_status(ids):
 
 def follow_links(text, depth=0, followed=set()):
     # Make sure we're not on a wild goose chase
+    texts = []
+
     if depth > MAX_DEPTH:
         print 'MAX DEPTH REACHED'
         print text
-        return ''
+        return texts
 
     urls = re.findall(re_urls, text)
     for url in urls:
         text = text.replace(url, '')
     if not urls:
-        return text
+        texts.append(('TWEET', text))
+        return texts
     else:
-        link_texts = []
         for url in urls:
             if 't.co' in urls[0]:
                 url = urllib2.urlopen(urls[0]).url
@@ -57,16 +59,18 @@ def follow_links(text, depth=0, followed=set()):
                 # print 'Found link to status %s'%status_id
                 retrieved_status = get_status([status_id])[0]
                 link_text = retrieved_status.text
-                link_text = follow_links(link_text, depth + 1, followed)
-                link_texts.append(('TWEET', link_text))
+                texts.append(('TWEET', link_text))
+                sub_texts = follow_links(link_text, depth + 1, followed)
+                if sub_texts:
+                    texts += sub_texts
             else:
                 a = Article(url)
                 a.download()
                 a.parse()
                 link_text = a.title
-                link_texts.append(('LINK', link_text))
+                texts.append(('LINK', link_text))
                 # print 'found link: %s'%link_text
-        texts = [('TWEET', text)] + link_texts
+        texts = [('TWEET', text)] + texts
         return [t for t in texts if t]
 
 

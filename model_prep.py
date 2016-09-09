@@ -26,7 +26,7 @@ def get_user_data_vars(user_data):
     entry = dict()
 
     # Things that should NOT get included in the model
-    entry['user_id'] = user_data['id']
+    entry['user_id_str'] = user_data['id_str']
     entry['screen_name'] = user_data['screen_name']
 
     # Things that should be important

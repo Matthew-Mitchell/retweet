@@ -14,10 +14,7 @@ class Retweet:
         else:
             self.tweeter = '@' + tweet['retweeted_status']['user']['screen_name']
             self.retweeter = '@' + tweet['user']['screen_name']
-        self.follows1 = None
-        self.follows2 = None
         self.retweet = tweet
-        self.tweeter_history = []
     def get_history(self, api, ntweets):
         cursor = tweepy.Cursor(api.user_timeline,screen_name=self.tweeter, count=100).items(ntweets)
         self.tweeter_history = [tweet._json for tweet in limit_cursor(cursor)]

@@ -18,6 +18,7 @@ db = client.retweets
 
 # Set max tweets for initialization and update
 max_tweets_init=5000
+max_tweetsat_init=200
 
 # List of twitter accounts to track
 accounts = ['@camanpour', '@nycjim', '@mikeallen', '@chriscuomo', '@lawrence', '@donnabrazile', '@bretbaier', '@tuckercarlson', '@wolfblitzer', '@jmartnyt', '@markos', '@anamariecox', '@glennbeck', '@morningmika', '@secupp', '@brithume', '@thereval', '@nytimeskrugman', '@dylanbyers', '@maddow', '@mitchellreports', '@ariannahuff', '@norahodonnell', '@howardkurtz', '@jonkarl', '@markhalperin', '@jeffreygoldberg', '@ahmalcolm', '@costareports', '@andreatantaros', '@larrysabato', '@teamcavuto', '@natesilver538', '@buzzfeedben', '@samsteinhp', '@billkeller2014', '@krauthammer', '@daveweigel', '@stephenfhayes', '@mollyesque', '@joenbc', '@joshtpm', '@jdickerson', '@davidcorndc', '@williegeist', '@andersoncooper', '@drudge', '@jonahnro', '@anncoulter', '@greta', '@monicacrowley', '@greggutfeld', '@mkhammer', '@edhenry', '@dloesch', '@michellemalkin', '@kirstenpowers', '@davidfrum', '@megynkelly', '@dleonhardt', '@rbreich', '@rickklein', '@charlesmblow', '@marcambinder', '@peggynoonannyc', '@katrinanation', '@anncurry', '@nickkristof', '@borowitzreport', '@tomfriedman', '@mharrisperry', '@ktumulty', '@markleibovich', '@markknoller', '@danaperino', '@blakehounshell', '@nickconfessore', '@ericbolling', '@mtaibbi', '@judgenap', '@seanhannity', '@fareedzakaria', '@kimguilfoyle', '@ryanlizza', '@ewerickson', '@hardball_chris', '@politicalwire', '@maggienyt', '@chucktodd', '@chrislhayes', '@gstephanopoulos', '@richlowry', '@majorcbs', '@oreillyfactor']
@@ -45,7 +46,7 @@ from harvester import TwitterUser
 for username in accounts:
     user = TwitterUser(username, api, db)
     user.update_tweets(max_tweets_init)
-    user.update_tweetsat(max_tweets_init)
+    user.update_tweetsat(max_tweetsat_init)
 client.close()
 print 'Done initializing'
 

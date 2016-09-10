@@ -4,7 +4,7 @@
 # pip install tweepy
 import cnfg
 import tweepy
-config = cnfg.load(".twitter_config_whosyodata")
+config = cnfg.load(".twitter_config_old")
 auth = tweepy.OAuthHandler(config["consumer_key"],
                            config["consumer_secret"])
 auth.set_access_token(config["access_token"],

@@ -47,10 +47,9 @@ def get_ids():
     first = ct_est - datetime.timedelta(days=7) + datetime.timedelta(hours=3)
     begin =  datetime.datetime(year=first.year, month=first.month, day=first.day, hour=first.hour, minute=45, tzinfo=first.tzinfo)
     begin_utc = begin.astimezone(timezone('UTC'))
-    #(begin - dt_id[0][0]).total_seconds()
 
     df = pd.DataFrame(dt_id, columns=['time', 'tweet_id'])
-    time_since_beginning = map(lambda x: x.total_seconds(), df['time'] - begin_utc)
+    time_since_beginning = map(lambda x: x.item().total_seconds(), df['time'] - begin_utc)
     tweet_ids = df['tweet_id'].astype(float)
     f = interp1d(time_since_beginning, tweet_ids, 'linear')
 
@@ -64,7 +63,6 @@ def get_ids():
         begin = datetime.datetime(year=first.year, month=first.month, day=first.day, hour=first.hour, minute=45,
                                   tzinfo=first.tzinfo)
         begin_utc = begin.astimezone(timezone('UTC'))
-        # (begin - dt_id[0][0]).total_seconds()
 
         df = pd.DataFrame(dt_id, columns=['time', 'tweet_id'])
         time_since_beginning = map(lambda x: x.total_seconds(), df['time'] - begin_utc)

@@ -20,7 +20,7 @@ import pandas as pd
 from scipy.interpolate import interp1d
 from pytz import timezone
 
-config = cnfg.load(".twitter_config")
+config = cnfg.load(".twitter_config_old")
 auth = tweepy.OAuthHandler(config["consumer_key"], config["consumer_secret"])
 auth.set_access_token(config["access_token"], config["access_token_secret"])
 api=tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, retry_delay=5*60, retry_count=5)
@@ -69,8 +69,13 @@ def get_ids():
         df = pd.DataFrame(dt_id, columns=['time', 'tweet_id'])
         time_since_beginning = map(lambda x: x.total_seconds(), df['time'] - begin_utc)
         tweet_ids = df['tweet_id'].astype(float)
+
         f = interp1d(time_since_beginning, tweet_ids, kind='linear')
-        tweet_id = long(f(0))
+        try:
+            tweet_id = long(f(0))
+        except:
+            break
+
         tids.append(tweet_id)
 
         hours += 1
@@ -83,19 +88,21 @@ def do_backfill(screen_name, tids):
 
     collection_name = screen_name[1:] + '_tweetsat'
     last_id = None
+    nstored = 0
     for tid in tids:
         # Retreive tweets
         tweets = api.search(q=screen_name, count=100, max_id=tid, since_id=last_id)
         last_id = max([t.id for t in tweets])
-        print tweets[0].created_at
-        print tweets[0].text
+        nstored += store_tweets(tweets, db, collection_name)
+    return nstored
 
-        nstored = store_tweets(tweets, db, collection_name)
 
+print "Backfilling tweets"
 tids = get_ids()
-
 
 new_users = ['@jaketapper', '@sullydish', '@camanpour', '@nycjim', '@mikeallen', '@chriscuomo', '@lawrence', '@donnabrazile', '@bretbaier', '@tuckercarlson', '@wolfblitzer', '@jmartnyt', '@markos', '@anamariecox', '@glennbeck', '@morningmika', '@secupp', '@brithume', '@thereval', '@nytimeskrugman', '@dylanbyers', '@maddow', '@mitchellreports', '@ariannahuff', '@norahodonnell', '@howardkurtz', '@jonkarl', '@markhalperin', '@jeffreygoldberg', '@ahmalcolm', '@costareports', '@andreatantaros', '@larrysabato', '@teamcavuto', '@natesilver538', '@buzzfeedben', '@samsteinhp', '@billkeller2014', '@krauthammer', '@daveweigel', '@stephenfhayes', '@mollyesque', '@joenbc', '@joshtpm', '@jdickerson', '@davidcorndc', '@williegeist', '@andersoncooper', '@drudge', '@jonahnro', '@anncoulter', '@greta', '@monicacrowley', '@greggutfeld', '@mkhammer', '@edhenry', '@dloesch', '@michellemalkin', '@kirstenpowers', '@davidfrum', '@megynkelly', '@dleonhardt', '@rbreich', '@rickklein', '@charlesmblow', '@marcambinder', '@peggynoonannyc', '@katrinanation', '@anncurry', '@nickkristof', '@borowitzreport', '@tomfriedman', '@mharrisperry', '@ktumulty', '@markleibovich', '@markknoller', '@danaperino', '@blakehounshell', '@nickconfessore', '@ericbolling', '@mtaibbi', '@judgenap', '@seanhannity', '@fareedzakaria', '@kimguilfoyle', '@ryanlizza', '@ewerickson', '@hardball_chris', '@politicalwire', '@maggienyt', '@chucktodd', '@chrislhayes', '@gstephanopoulos', '@richlowry', '@majorcbs', '@oreillyfactor']
 
-for screen_name in new_users[:1]:
-    do_backfill(screen_name, tids)
+for screen_name in new_users:
+    print "Starting %s"%screen_name
+    nstored = do_backfill(screen_name, tids)
+    print "%d stored"%nstored

@@ -19,6 +19,7 @@ from dateutil import parser
 import pandas as pd
 from scipy.interpolate import interp1d
 from pytz import timezone
+import numpy as np
 
 config = cnfg.load(".twitter_config_old")
 auth = tweepy.OAuthHandler(config["consumer_key"], config["consumer_secret"])
@@ -49,7 +50,7 @@ def get_ids():
     begin_utc = begin.astimezone(timezone('UTC'))
 
     df = pd.DataFrame(dt_id, columns=['time', 'tweet_id'])
-    time_since_beginning = map(lambda x: x.item().total_seconds(), df['time'] - begin_utc)
+    time_since_beginning = map(lambda x: x / np.timedelta64(1, 's'), df['time'] - begin_utc)
     tweet_ids = df['tweet_id'].astype(float)
     f = interp1d(time_since_beginning, tweet_ids, 'linear')
 
@@ -65,7 +66,7 @@ def get_ids():
         begin_utc = begin.astimezone(timezone('UTC'))
 
         df = pd.DataFrame(dt_id, columns=['time', 'tweet_id'])
-        time_since_beginning = map(lambda x: x.total_seconds(), df['time'] - begin_utc)
+        time_since_beginning = map(lambda x: x/np.timedelta64(1, 's'), df['time'] - begin_utc)
         tweet_ids = df['tweet_id'].astype(float)
 
         f = interp1d(time_since_beginning, tweet_ids, kind='linear')

@@ -9,11 +9,11 @@ auth = tweepy.OAuthHandler(config["consumer_key"],
                            config["consumer_secret"])
 auth.set_access_token(config["access_token"],
                       config["access_token_secret"])
-api=tweepy.API(auth)
+api=tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, retry_delay=3*60, retry_count=6)
 
 # Set up database
 from pymongo import MongoClient
-client = MongoClient(wait_on_rate_limit=True, wait_on_rate_limit_notify=True, retry_delay=3*60, retry_count=6)
+client = MongoClient()
 db = client.retweets
 
 # Set max tweets for initialization and update

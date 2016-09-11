@@ -28,7 +28,19 @@ accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@
             '@kimguilfoyle', '@ryanlizza', '@ewerickson', '@hardball_chris', '@politicalwire', '@maggienyt',
             '@chucktodd', '@chrislhayes', '@gstephanopoulos', '@richlowry', '@majorcbs', '@oreillyfactor']
 
-
+accounts1 = ['@morningmika', '@secupp', '@brithume', '@thereval', '@nytimeskrugman', '@dylanbyers',
+            '@maddow', '@mitchellreports', '@ariannahuff', '@norahodonnell', '@howardkurtz', '@jonkarl',
+            '@markhalperin', '@jeffreygoldberg', '@ahmalcolm', '@costareports', '@larrysabato',
+            '@teamcavuto', '@natesilver538', '@buzzfeedben', '@samsteinhp', '@billkeller2014', '@krauthammer',
+            '@daveweigel', '@stephenfhayes', '@mollyesque', '@joenbc', '@joshtpm', '@jdickerson', '@davidcorndc',
+            '@williegeist', '@andersoncooper', '@drudge', '@jonahnro', '@anncoulter', '@greta', '@monicacrowley',
+            '@greggutfeld', '@mkhammer', '@edhenry', '@dloesch', '@michellemalkin', '@kirstenpowers', '@davidfrum',
+            '@megynkelly', '@dleonhardt', '@rbreich', '@rickklein', '@charlesmblow', '@marcambinder',
+            '@peggynoonannyc', '@katrinanation', '@anncurry', '@nickkristof', '@borowitzreport', '@tomfriedman',
+            '@mharrisperry', '@ktumulty', '@markleibovich', '@markknoller', '@danaperino', '@blakehounshell',
+            '@nickconfessore', '@ericbolling', '@mtaibbi', '@judgenap', '@seanhannity', '@fareedzakaria',
+            '@kimguilfoyle', '@ryanlizza', '@ewerickson', '@hardball_chris', '@politicalwire', '@maggienyt',
+            '@chucktodd', '@chrislhayes', '@gstephanopoulos', '@richlowry', '@majorcbs', '@oreillyfactor']
 
 
 class Tweet:
@@ -210,9 +222,9 @@ def process_all_tweets(ctype, accounts):
 
             # Store result
             tostore = proc_tweet.__dict__
-            if not target_collection.find({'meta.id_str': tostore['meta']['id_str']}).count():
-                target_collection.insert_one(tostore)
-                num_user_stored += 1
+            # if not target_collection.find({'meta.id_str': tostore['meta']['id_str']}).count():
+            target_collection.insert_one(tostore)
+            num_user_stored += 1
         print "%-18s: %d stored" % (screen_name, num_user_stored)
         num_stored += num_user_stored
         total_count += coll.count()
@@ -222,7 +234,7 @@ def process_all_tweets(ctype, accounts):
     print "Total %d stored" % target_collection.count()
 
 
-process_all_tweets('tweets', accounts)
+process_all_tweets('tweets', accounts1)
 print ''
 process_all_tweets('tweetsat', accounts)
 print ''

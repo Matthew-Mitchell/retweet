@@ -81,7 +81,7 @@ def separate_emoji(s):
     return ' '.decode('UTF-8').join( [rm_emoji(s, emoji).decode('UTF-8')] + emoji)
 
 def despace(s):
-    return re.sub(' +',' ', s)
+    return re.sub('\s+',' ', s)
 
 punct_space = '.,!$%\^&\*:;=_`~\?'
 punct_lspace = '@#'

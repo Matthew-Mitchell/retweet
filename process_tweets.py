@@ -276,13 +276,15 @@ max_updates = 1000
 num_updated = 0
 # while remaining_count and remaining_accounts:
 for screen_name in accounts:
+    num_user_updated = 0
     cname = '_'.join([screen_name[1:], ctype])
     coll = db_target[cname]
 
     num_remaining_before = coll.find({'original': {'$type': 'string'}}).count()
-    print "Before batches, %d originals to fill in" % num_remaining_before
+    print "%s Before batches, %d originals to fill in" %(screen_name, num_remaining_before)
 
-    while coll.find({'original': {'$type': 'string'}}).count() and num_updated < max_updates:
-        num_updated += process_originals_batch(coll, api)
+    while coll.find({'original': {'$type': 'string'}}).count() and num_user_updated < max_updates:
+        num_user_updated += process_originals_batch(coll, api)
+    num_updated += num_user_updated
 
 print coll.find({'type': 'reply', 'original': {'$not': {'$type': 'string'}}}).count()

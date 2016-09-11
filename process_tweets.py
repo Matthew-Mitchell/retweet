@@ -196,7 +196,7 @@ def process_all_tweets(ctype, accounts):
         coll = db[cname]
 
         target_collection = db_target[cname]
-        target_collection.drop()
+        # target_collection.drop()
 
         for tweet in coll.find():
             # Get tweet data
@@ -221,21 +221,12 @@ def process_all_tweets(ctype, accounts):
     print "%d Stored, %d bad" % (num_stored, num_bad)
 
 
-process_all_tweets('tweets', ['@donlemon'])
+#process_all_tweets('tweets', accounts)
 #process_all_tweets('tweetsat', accounts)
 #print ''
 
 
 
-
-
-import tweepy
-import cnfg
-
-config = cnfg.load(".twitter_config_old")
-auth = tweepy.OAuthHandler(config["consumer_key"], config["consumer_secret"])
-auth.set_access_token(config["access_token"], config["access_token_secret"])
-api=tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, retry_delay=4*60, retry_count=6)
 
 
 def process_originals_batch(coll, api):
@@ -271,19 +262,28 @@ def process_originals_batch(coll, api):
     return num_updated
 
 
-# ctype = 'tweets'
-# remaining_accounts = accounts[:1]
-# max_updates = 1000
-# num_updated = 0
-# # while remaining_count and remaining_accounts:
-# for screen_name in accounts[:1]:
-#     cname = '_'.join([screen_name[1:], ctype])
-#     coll = db[cname]
-#
-#     num_remaining_before = coll.find({'original': {'$type': 'string'}}).count()
-#     print "Before batches, %d originals to fill in" % num_remaining_before
-#
-    # while coll.find({'original': {'$type': 'string'}}).count() and num_updated < max_updates:
-    #     num_updated += process_originals_batch(coll, api)
-#
-# print coll.find({'type': 'reply', 'original': {'$not': {'$type': 'string'}}}).count()
+import tweepy
+import cnfg
+
+config = cnfg.load(".twitter_config_old")
+auth = tweepy.OAuthHandler(config["consumer_key"], config["consumer_secret"])
+auth.set_access_token(config["access_token"], config["access_token_secret"])
+api=tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, retry_delay=4*60, retry_count=6)
+
+
+ctype = 'tweets'
+remaining_accounts = accounts[:1]
+max_updates = 1000
+num_updated = 0
+# while remaining_count and remaining_accounts:
+for screen_name in accounts[:1]:
+    cname = '_'.join([screen_name[1:], ctype])
+    coll = db[cname]
+
+    num_remaining_before = coll.find({'original': {'$type': 'string'}}).count()
+    print "Before batches, %d originals to fill in" % num_remaining_before
+
+    while coll.find({'original': {'$type': 'string'}}).count() and num_updated < max_updates:
+        num_updated += process_originals_batch(coll, api)
+
+print coll.find({'type': 'reply', 'original': {'$not': {'$type': 'string'}}}).count()

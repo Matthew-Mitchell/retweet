@@ -174,7 +174,7 @@ def get_user(tweet):
 
     # Things that I'm including for the hell of it
     entry['geo_enabled'] = user_data['geo_enabled']
-    entry['has_extended_profile'] = user_data['has_extended_profile']
+    # entry['has_extended_profile'] = user_data['has_extended_profile']
     entry['protected'] = user_data['protected']
     entry['utc_offset'] = user_data['utc_offset']
     entry['lang'] = user_data['lang']

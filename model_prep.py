@@ -78,6 +78,7 @@ def space_emoji(s, emoji):
     return s
 
 def separate_emoji(s):
+    emoji = find_emoji(s)
     return ' '.decode('UTF-8').join( [rm_emoji(s, emoji).decode('UTF-8')] + emoji)
 
 def despace(s):

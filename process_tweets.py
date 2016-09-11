@@ -278,7 +278,7 @@ num_updated = 0
 # while remaining_count and remaining_accounts:
 for screen_name in accounts[:1]:
     cname = '_'.join([screen_name[1:], ctype])
-    coll = db[cname]
+    coll = db_target[cname]
 
     num_remaining_before = coll.find({'original': {'$type': 'string'}}).count()
     print "Before batches, %d originals to fill in" % num_remaining_before

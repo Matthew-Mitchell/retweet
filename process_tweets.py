@@ -272,11 +272,10 @@ api=tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, re
 
 
 ctype = 'tweets'
-remaining_accounts = accounts[:1]
 max_updates = 1000
 num_updated = 0
 # while remaining_count and remaining_accounts:
-for screen_name in accounts[:1]:
+for screen_name in accounts:
     cname = '_'.join([screen_name[1:], ctype])
     coll = db_target[cname]
 

@@ -8,6 +8,7 @@ import re
 #client = MongoClient(host=uri)
 client = MongoClient()
 db = client.retweets
+db_target = client.processed
 
 accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@IAmSteveHarvey', '@juliaioffe',
             '@ForecasterEnten', '@wikileaks', '@pescami', '@TheFix',
@@ -30,6 +31,7 @@ accounts = ['@donlemon', '@kanyewest', '@realDonaldTrump', '@JusticeWillett', '@
 
 class Tweet:
     def __init__(self, tweet, source='', source_id=''):
+        self.id = tweet['id']
         self.meta = {'id': tweet['id'], 'id_str': tweet['id_str'], 'created_at': tweet['created_at']}
         self.source = {'collection': source, 'id': source_id}
         self.get_type(tweet)
@@ -181,9 +183,7 @@ def analyze_description(desc):
 def process_all_tweets(ctype, accounts):
     print "processing %s" % (ctype)
 
-    print '_'.join([ctype, 'processed'])
-    target_collection = db['_'.join([ctype, 'processed'])]
-    target_collection.drop()
+
 
     total_count = 0
     num_stored = 0
@@ -194,6 +194,9 @@ def process_all_tweets(ctype, accounts):
         # Access collection
         cname = '_'.join([screen_name[1:], ctype])
         coll = db[cname]
+
+        target_collection = db_target[cname]
+        # target_collection.drop()
 
         for tweet in coll.find():
             # Get tweet data
@@ -207,9 +210,9 @@ def process_all_tweets(ctype, accounts):
 
             # Store result
             tostore = proc_tweet.__dict__
-            # if not target_collection.find({'meta.id': tostore['meta']['id']}).count():
-            target_collection.insert_one(tostore)
-            num_user_stored += 1
+            if not target_collection.find({'id': tostore['id']}).count():
+                target_collection.insert_one(tostore)
+                num_user_stored += 1
         print "%-18s: %d stored" % (screen_name, num_user_stored)
         num_stored += num_user_stored
         total_count += coll.count()

@@ -213,12 +213,12 @@ def process_all_tweets(ctype, accounts):
             if not target_collection.find({'meta.id_str': tostore['meta']['id_str']}).count():
                 target_collection.insert_one(tostore)
                 num_user_stored += 1
-        print "%s: %d stored" % (screen_name, num_user_stored)
+        print "%-18s: %d stored" % (screen_name, num_user_stored)
         num_stored += num_user_stored
         total_count += coll.count()
 
-    print "Total number of tweets: %d, %d bad" % (total_count, num_bad)
-    print "%d Stored" % num_stored
+    print "Total number of tweets: %d" % (total_count)
+    print "%d Stored, %d bad" % (num_stored, num_bad)
     print "Total %d stored" % target_collection.count()
 
 

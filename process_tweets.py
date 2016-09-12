@@ -272,7 +272,7 @@ api=tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, re
 
 
 ctype = 'tweetsat'
-max_updates = 100
+max_updates = 20000
 num_updated = 0
 # while remaining_count and remaining_accounts:
 for screen_name in accounts:

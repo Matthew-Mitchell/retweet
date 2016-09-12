@@ -116,11 +116,9 @@ class Tweet:
         # Format text for easy tokenization
 
 
-punct_space = '.,%\^&\*:;=`~\?'
+punct_space = '.,%&:;=`~\?'
 punct_lspace = '@#'
 punct_rem = '{}()\/'
-
-
 def text_format(text):
     # Special case: ampersand
     s = text.replace('&amp;', '&')

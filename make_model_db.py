@@ -37,28 +37,27 @@ accounts = ['@donlemon', '@juliaioffe',
 # Create target set
 dbm = client.model
 
-ntarget = 0
-for screen_name in accounts:
-    coll1 = dbp[screen_name[1:] + '_tweets']
-    for tweet in coll1.find({'original': {'$ne': None}, 'original.contents.user_mentions': {'$ne': []}}):
-        if screen_name[1:].lower() in [m['screen_name'].lower() for m in
-                                       tweet['original']['contents']['user_mentions']]:
-            if (not tweet['original']['contents']['user']['verified']) and (
-                tweet['original']['contents']['user']['followers_count'] < 1000):
-                ntarget += 1
-            dbm.target.insert_one(tweet)
-print ntarget
+# ntarget = 0
+# for screen_name in accounts:
+#     coll1 = dbp[screen_name[1:] + '_tweets']
+#     for tweet in coll1.find({'original': {'$ne': None}, 'original.contents.user_mentions': {'$ne': []}}):
+#         if screen_name[1:].lower() in [m['screen_name'].lower() for m in
+#                                        tweet['original']['contents']['user_mentions']]:
+#             if (not tweet['original']['contents']['user']['verified']) and (
+#                 tweet['original']['contents']['user']['followers_count'] < 1000):
+#                 ntarget += 1
+#             dbm.target.insert_one(tweet)
+# print ntarget
 
 
 # create baseline set.  haven't run yet.
-dbm = client.model
 
 ntarget = 0
 for screen_name in accounts:
     coll1 = dbp[screen_name[1:] + '_tweetsat']
-    for tweet in coll1.find({'contents.user_mentions': {'$ne': []}}):
+    for tweet in coll1.find({'contents': {'$exists': 1}, 'contents.user_mentions': {'$ne': []}}):
         if screen_name[1:].lower() in [m['screen_name'].lower() for m in tweet['contents']['user_mentions']]:
             if  (not tweet['contents']['user']['verified']) and (tweet['contents']['user']['followers_count'] < 1000):
                 ntarget += 1
-            dbm.baseline.insert_one(tweet)
+            #dbm.baseline.insert_one(tweet)
 print ntarget

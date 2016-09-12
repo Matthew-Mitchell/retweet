@@ -271,8 +271,8 @@ auth.set_access_token(config["access_token"], config["access_token_secret"])
 api=tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, retry_delay=4*60, retry_count=6)
 
 
-ctype = 'tweets'
-max_updates = 1000
+ctype = 'tweetsat'
+max_updates = 100
 num_updated = 0
 # while remaining_count and remaining_accounts:
 for screen_name in accounts:
@@ -287,4 +287,5 @@ for screen_name in accounts:
         num_user_updated += process_originals_batch(coll, api)
     num_updated += num_user_updated
 
-print coll.find({'type': 'reply', 'original': {'$not': {'$type': 'string'}}}).count()
+# print coll.find({'original': {'$not': {'$type': 'string'}}}).count()
+# print coll.find({'type': 'reply', 'original': {'$not': {'$type': 'string'}}}).count()

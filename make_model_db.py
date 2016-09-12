@@ -56,8 +56,7 @@ ntarget = 0
 for screen_name in accounts:
     coll1 = dbp[screen_name[1:] + '_tweetsat']
     for tweet in coll1.find({'contents': {'$exists': 1}, 'contents.user_mentions': {'$ne': []}}):
-        if screen_name[1:].lower() in [m['screen_name'].lower() for m in tweet['contents']['user_mentions']]:
-            if  (not tweet['contents']['user']['verified']) and (tweet['contents']['user']['followers_count'] < 1000):
-                ntarget += 1
+        if  (not tweet['contents']['user']['verified']) and (tweet['contents']['user']['followers_count'] < 1000):
+            ntarget += 1
             #dbm.baseline.insert_one(tweet)
 print ntarget
